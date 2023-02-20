@@ -96,7 +96,7 @@ impl CameraState for Streaming {
                 while arc_abort_handle.is_live() {
                     let mut data = stream_data.get_data()?;
                     if data.is_empty() {
-                        thread::sleep(std::time::Duration::from_millis(10));
+                        thread::sleep(std::time::Duration::from_millis(100));
                     } else {
                         let mut locked_output = output_thread.lock().unwrap();
                         for datum in data.drain(..) {
