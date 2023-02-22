@@ -76,6 +76,9 @@ pub struct BcXml {
     /// Sent to move the camera
     #[yaserde(rename = "PtzControl")]
     pub ptz_control: Option<PtzControl>,
+    /// Battery cameras report battery status
+    #[yaserde(rename = "BatteryList")]
+    pub battery_list: Option<BatteryList>,
 }
 
 impl BcXml {
@@ -461,6 +464,38 @@ pub struct PtzControl {
     pub speed: f32,
     /// The direction to transverse. Known directions: "right"
     pub command: String,
+}
+
+/// The batteryList
+#[derive(PartialEq, Default, Debug, YaDeserialize, YaSerialize)]
+pub struct BatteryList {
+    /// BatteryList contains embedded BatteryInfo.  Could there be multiple?  I don't know.
+    #[yaserde(rename = "BatteryInfo")]
+    pub battery_info: BatteryInfo,
+}
+
+/// The batteryInfo
+#[derive(PartialEq, Default, Debug, YaDeserialize, YaSerialize)]
+pub struct BatteryInfo {
+    /// The channel
+    #[yaserde(rename = "channelId")]
+    pub channel_id: u8,
+    /// Charge status, presumably indicates whether charging or not.  Known values are `"none"`
+    pub chargeStatus: String,
+    /// Adapter status, whether plugged in or not. Known values are `"adapter"` `"none"`
+    pub adapterStatus: String,
+    /// voltage. An integer in millivolts, e.g. 4131 is 4.132V
+    pub voltage: i32,
+    /// Charge status. An integer in milliamps, negative means discharging
+    pub current: i32,
+    /// Temperature, An integer in Celcius
+    pub temperature: i32,
+    /// battery level. An integer 0..100
+    pub batteryPercent: i32,
+    /// low power alert.  Could be 0 or 1 ??
+    pub lowPower: i32,
+    /// battery version level. Looks to be an integer
+    pub batteryVersion: i32,
 }
 
 /// Convience function to return the xml version used throughout the library
