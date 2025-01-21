@@ -177,6 +177,9 @@ pub(crate) struct CameraConfig {
     #[serde(default = "default_print", alias = "print")]
     pub(crate) print_format: PrintFormat,
 
+    #[serde(default = "default_false", alias = "battery", alias = "battery_info")]
+    pub(crate) print_battery_info: bool,
+
     #[serde(default = "default_update_time", alias = "time")]
     pub(crate) update_time: bool,
 

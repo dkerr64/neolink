@@ -99,6 +99,10 @@ pub struct BcCameraOpt {
     pub discovery: DiscoveryMethods,
     /// Maximum number of retries for discovery
     pub max_discovery_retries: usize,
+    /// Printing format for auxilaary data such as battery levels
+    pub aux_printing: PrintFormat,
+    /// whether to print batery info
+    pub print_battery_info: bool,
     /// Credentials for login
     pub credentials: Credentials,
     /// Toggle debug print of underlying data
@@ -364,6 +368,11 @@ impl BcCamera {
             cancel: CancellationToken::new(),
         };
         me.keepalive().await?;
+        if options.print_battery_info {
+            if let Err(e) = me.monitor_battery(options.aux_printing).await {
+                warn!("Could not monitor battery: {:?}", e);
+            }
+        }
         Ok(me)
     }
 

@@ -9,6 +9,8 @@ use std::str::FromStr;
 #[derive(Parser, Debug)]
 #[command(name = "neolink", arg_required_else_help = true, version = crate_version!(), author = crate_authors!("\n"))]
 pub struct Opt {
+    #[arg(short, long, global = true, action)]
+    pub battery_info: bool,
     #[arg(short, long, global = true, value_parser = PathBuf::from_str)]
     pub config: Option<PathBuf>,
     #[structopt(subcommand)]
